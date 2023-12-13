@@ -18,16 +18,6 @@
 (defn known [words]
   (set (filter #(contains? WORDS %) words)))
 
-;; This python
-def edits1(word):
-    letters    = 'abcdefghijklmnopqrstuvwxyz'
-    splits     = [(word[:i], word[i:])    for i in range(len(word) + 1)]
-    deletes    = [L + R[1:]               for L, R in splits if R]
-    transposes = [L + R[1] + R[0] + R[2:] for L, R in splits if len(R)>1]
-    replaces   = [L + c + R[1:]           for L, R in splits if R for c in letters]
-    inserts    = [L + c + R               for L, R in splits for c in letters]
-    return set(deletes + transposes + replaces + inserts)
-
 (defn split-string-at [s n]
   (map #(apply str %) (split-at n s)))
 
@@ -48,9 +38,12 @@ def edits1(word):
     (set/union deletes transposes replaces inserts)))
 
 ;; this python
-(def edits2 [word]
-    "All edits that are two edits away from `word`."
-    return) (e2 for e1 in edits1(word) for e2 in edits1(e1))
+(defn edits2
+  "All edits that are two edits away from `word`."
+  [word]
+  (for [e1 (edits1 word)
+        e2 (edits1 e1)]
+    e2))
 
 (defn candidates "Generate possible spelling corrections for word."
   [word]
@@ -66,4 +59,5 @@ def edits1(word):
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (println WORDS))
+  (doseq [w ["speling" "correct" "helo"]]
+    (println (correction w))))

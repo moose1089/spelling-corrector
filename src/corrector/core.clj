@@ -52,7 +52,6 @@
         e2 (edits1 e1)]
     e2))
 
-
 (defn candidates "Generate possible spelling corrections for word."
   [word]
   (or (known [word])
@@ -66,7 +65,7 @@
   ;(println "WWWW" (map #(vector % (P %)) (candidates word)))
   (last (sort-by P (candidates word))))
 
-;(trace/trace-vars known)
+(trace/trace-vars edits2)
 
 (defn -main
   "I don't do a whole lot ... yet."
